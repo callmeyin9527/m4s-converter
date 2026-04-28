@@ -11,11 +11,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install system packages
+        run: |
+          sudo apt update
+          sudo apt install -y python3-pip zip unzip openjdk-17-jdk \
+          git build-essential libffi-dev libssl-dev \
+          python3-setuptools python3-wheel
+
+      - name: Install Buildozer
+        run: |
+          pip3 install --user buildozer cython
+
       - name: Build APK
-        uses: digreatbrian/buildozer-action@v1.0.0
-        with:
-          buildozer_version: stable
-          command: buildozer android debug
+        run: |
+          ~/.local/bin/buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
