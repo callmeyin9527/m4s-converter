@@ -1,0 +1,20 @@
+name: Build APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build APK
+        run: |
+          docker run --rm \
+          --user 1000:1000 \
+          -v ${{ github.workspace }}:/home/user/app \
+          -w /home/user/app \
+          ghcr.io/kivy/buildozer:latest \
+          buildozer android debug
